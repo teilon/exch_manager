@@ -19,7 +19,7 @@ class Handler(Resource):
         if HandlerModel.find_by_name(name):
             return {'message': "A Handler with name '{}' already exists.".format(name)}, 400
 
-        handler = HandlerModel(name)
+        handler = HandlerModel(name=name)
         try:
             handler.save_to_db()
         except:

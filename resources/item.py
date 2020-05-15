@@ -16,8 +16,8 @@ class Item(Resource):
 
     @classmethod
     def post(cls, name):
-        if ItemModel.find_by_name(name):
-            return {'message': "An item with name '{}' already exists.".format(name)}, 400
+        #if ItemModel.find_by_name(name):
+        #    return {'message': "An item with name '{}' already exists.".format(name)}, 400
 
         data = request.get_json()
         data['name'] = name

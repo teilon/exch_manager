@@ -1,5 +1,6 @@
 from ma import ma
 from models.handler import HandlerModel
+from schemas.item import ItemModel
 from schemas.item import ItemSchema
 
 
