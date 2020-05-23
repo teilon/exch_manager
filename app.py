@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from marshmallow import ValidationError
 
+from db import db
+
 from db import SQLALCHEMY_DATABASE_URI
 from ma import ma
 from resources.handler import Handler, HandlerList
@@ -11,6 +13,9 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI # 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
+
+db.init_app(app)
+ma.init_app(app)
 
 api = Api(app)
 
@@ -34,4 +39,4 @@ if __name__ == '__main__':
     from db import db
     db.init_app(app)
     ma.init_app(app)
-    app.run(port=5001, debug=True)
+    app.run(port=5000, debug=True)
