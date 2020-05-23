@@ -1,6 +1,9 @@
 from flask_restful import Resource, request
 from models.item import ItemModel
+from models.handler import HandlerModel
 from schemas.item import ItemSchema
+
+from pprint import pprint
 
 item_schema = ItemSchema()
 item_list_schema = ItemSchema(many=True)
@@ -63,7 +66,19 @@ class ItemList(Resource):
         data = request.get_json()
 
         for item_data in data:
+            handler_name = item_data['handler_name']
+
+            handler_id = HandlerModel.find_id_by_name(handler_name)
+            if not handler_id:
+                handler = HandlerModel(name=handler_name)
+                try:
+                    handler.save_to_db()
+                except:
+                    return {'message': 'An error occurred while creating the store.'}, 500
+                handler_id = handler.id
+            item_data['handler_id'] = handler_id
             item = item_schema.load(item_data)
+
             try:
                 item.save_to_db()
             except:

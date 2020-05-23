@@ -14,6 +14,12 @@ class HandlerModel(db.Model):
         return cls.query.filter_by(name=name).first()
 
     @classmethod
+    def find_id_by_name(cls, name):
+        handler = cls.query.filter_by(name=name).first()
+        if handler:
+            return handler.id
+
+    @classmethod
     def find_all(cls):
         return cls.query.all()
 
