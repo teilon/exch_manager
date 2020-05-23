@@ -57,3 +57,16 @@ class ItemList(Resource):
     @classmethod
     def get(cls):
         return {'items': item_list_schema.dump(ItemModel.find_all())}
+
+    @classmethod
+    def post(cls):
+        data = request.get_json()
+
+        for item_data in data:
+            item = item_schema.load(item_data)
+            try:
+                item.save_to_db()
+            except:
+                return {'message': 'An error occurre inserting the item.'}, 500
+
+        return {'message': 'Data posted.'}, 201
