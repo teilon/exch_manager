@@ -1,6 +1,8 @@
 from datetime import datetime
 from db import db
 
+#from db.sql import func
+
 
 class ItemModel(db.Model):
     __tablename__ = 'items'
@@ -29,3 +31,26 @@ class ItemModel(db.Model):
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
+
+    @classmethod
+    def best_status(cls, currency: str):
+        '''
+        SELECT Max(buy) AS buy, MIN(sale) AS sale
+        FROM items AS one
+        JOIN
+        (SELECT MAX(created_date) as created_date
+        FROM items
+        WHERE name='USD'
+        GROUP BY handler_id) AS two
+        ON (one.created_date = two.created_date)
+        '''
+
+        stmt = db.session.query(db.func.max(cls.created_date).label('created_date')).filter(
+            cls.name == currency).group_by(cls.handler_id).subquery()
+        query = db.session.query(db.func.max(cls.buy).label('buy_max'), db.func.min(cls.sale).label('sale_min')).join(
+            stmt, cls.created_date == stmt.c.created_date)
+        for one, two in query:
+           print('timer = {} | {}'.format(one, two))
+
+
+        return

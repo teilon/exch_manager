@@ -8,6 +8,7 @@ from db import SQLALCHEMY_DATABASE_URI
 from ma import ma
 from resources.handler import Handler, HandlerList
 from resources.item import Item, ItemList
+from resources.status import Status
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI # 'sqlite:///data.db'
@@ -34,9 +35,7 @@ api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(Handler, '/handler/<string:name>')
 api.add_resource(HandlerList, '/handlers')
+api.add_resource(Status, '/status/<string:name>')
 
 if __name__ == '__main__':
-    from db import db
-    db.init_app(app)
-    ma.init_app(app)
     app.run(port=5000, debug=True)
