@@ -1,14 +1,14 @@
 from ma import ma
-from models.handler import HandlerModel
+from models.entity import EntityModel
 from schemas.item import ItemModel
 from schemas.item import ItemSchema
 
 
-class HandlerSchema(ma.SQLAlchemyAutoSchema):
+class EntitySchema(ma.SQLAlchemyAutoSchema):
     items = ma.Nested(ItemSchema, many=True)
 
     class Meta:
-        model = HandlerModel
+        model = EntityModel
         dump_only = ('id',)
         include_fk = True
         load_instance = True

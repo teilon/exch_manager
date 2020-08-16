@@ -3,7 +3,7 @@ from db import db
 
 
 class ItemModel(db.Model):
-    __tablename__ = 'items'
+    __tablename__ = 'currency_items'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(3), nullable=False)
@@ -11,8 +11,8 @@ class ItemModel(db.Model):
     buy = db.Column(db.Float(precision=2), nullable=False)
     created_date = db.Column(db.DateTime, default=datetime.utcnow)
 
-    handler_id = db.Column(db.Integer, db.ForeignKey('handlers.id'), nullable=False)
-    handler = db.relationship('HandlerModel')
+    entity_id = db.Column(db.Integer, db.ForeignKey('entities.id'), nullable=False)
+    entity = db.relationship('EntityModel')
 
     @classmethod
     def find_by_name(cls, name):
@@ -22,7 +22,7 @@ class ItemModel(db.Model):
     def find_max_buy_price(cls, currency_name):
 
         stmt = db.session.query(db.func.max(cls.created_date).label('created_date')).filter(
-            cls.name == currency_name).group_by(cls.handler_id).subquery()
+            cls.name == currency_name).group_by(cls.entity_id).subquery()
 
         query = db.session.query(db.func.max(cls.buy)).join(
             stmt, cls.created_date == stmt.c.created_date)
@@ -32,7 +32,7 @@ class ItemModel(db.Model):
     @classmethod
     def find_min_sale_price(cls, currency_name):
         stmt = db.session.query(db.func.max(cls.created_date).label('created_date')).filter(
-            cls.name == currency_name).group_by(cls.handler_id).subquery()
+            cls.name == currency_name).group_by(cls.entity_id).subquery()
 
         query = db.session.query(db.func.min(cls.sale)).join(
             stmt, cls.created_date == stmt.c.created_date)

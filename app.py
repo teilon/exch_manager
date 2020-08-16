@@ -6,7 +6,7 @@ from db import db
 
 from db import SQLALCHEMY_DATABASE_URI
 from ma import ma
-from resources.handler import Handler, HandlerList
+from resources.entity import Entity, EntityList
 from resources.item import Item, ItemList
 from resources.status import StatusBestBuy, StatusBestSale
 
@@ -33,8 +33,8 @@ def handle_marshmallow_validation(err):     # except ValidationError as err
 
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
-api.add_resource(Handler, '/handler/<string:name>')
-api.add_resource(HandlerList, '/handlers')
+api.add_resource(Entity, '/entity/<string:name>')
+api.add_resource(EntityList, '/entities')
 api.add_resource(StatusBestBuy, '/status/buy/<string:name>')
 api.add_resource(StatusBestSale, '/status/sale/<string:name>')
 

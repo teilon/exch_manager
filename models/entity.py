@@ -1,11 +1,13 @@
 from db import db
 
 
-class HandlerModel(db.Model):
-    __tablename__ = 'handlers'
+class EntityModel(db.Model):
+    __tablename__ = 'entities'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
+    address = db.Column(db.String(200), nullable=False)
+    phone = db.Column(db.String(50), nullable=False)
 
     items = db.relationship('ItemModel', lazy='dynamic')
 
@@ -15,9 +17,9 @@ class HandlerModel(db.Model):
 
     @classmethod
     def find_id_by_name(cls, name):
-        handler = cls.query.filter_by(name=name).first()
-        if handler:
-            return handler.id
+        entity = cls.query.filter_by(name=name).first()
+        if entity:
+            return entity.id
 
     @classmethod
     def find_all(cls):
