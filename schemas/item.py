@@ -27,6 +27,6 @@ class ItemSchemaSale(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = ItemModel
         include_fk = True
-        exclude = ('handler_id', 'id', 'buy', 'created_date')
+        exclude = ('entity_id', 'id', 'buy', 'created_date')
 
     entity_name = ma.Function(lambda field: field.entity.name)
